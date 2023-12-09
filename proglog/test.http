@@ -1,0 +1,15 @@
+### Add value to log
+POST http://localhost:8080/
+
+{
+  "record": {
+    "value": "TGV0J3MgR28gIzEK"
+  }
+}
+
+### Get value at a given offset
+GET http://localhost:8080/
+
+{
+  "offset": 0
+}
