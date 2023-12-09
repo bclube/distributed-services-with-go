@@ -1,9 +1,23 @@
 # distributed-services-with-go
 
+### Chapter 2
+To compile protocol buffer objects:
+```
+> cd proglog
+> make compile
+... compiles v1 .proto files
+> make test
+... runs tests
+> make build
+... builds application
+> make run
+... runs application
+```
+
 ### Chapter 1
 To run :
 ```
-> cd /proglog/cmd/server
+> cd proglog/cmd/server
 > go run main.go
 ```
 - Open /proglog/test.http
