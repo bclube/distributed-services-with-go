@@ -1,7 +1,12 @@
 # distributed-services-with-go
 
-### Chapter 2
-To compile protocol buffer objects:
+### To generate ssl certs:
+```
+> cd proglog
+> make gencert
+```
+
+### To compile protocol buffer objects:
 ```
 > cd proglog
 > make compile
@@ -14,8 +19,7 @@ To compile protocol buffer objects:
 ... runs application
 ```
 
-### Chapter 1
-To run :
+### To run :
 ```
 > cd proglog/cmd/server
 > go run main.go
