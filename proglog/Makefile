@@ -16,7 +16,7 @@ gencert: init
 		-profile=server \
 		./test/server-csr.json | cfssljson -bare server
 
-#	cfssl gencert \
+	cfssl gencert \
 		-ca=ca.pem \
 		-ca-key=ca-key.pem \
 		-config=test/ca-config.json \

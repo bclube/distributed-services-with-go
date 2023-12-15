@@ -70,6 +70,7 @@ func createServer(t *testing.T, l net.Listener, cfg *Config) func() {
 		KeyFile:       config.ServerKeyFile,
 		CAFile:        config.CAFile,
 		ServerAddress: l.Addr().String(),
+		Server:        true,
 	})
 	require.NoError(t, err)
 
@@ -102,7 +103,9 @@ func createClient(t *testing.T, l net.Listener) (api.LogClient, func()) {
 	t.Helper()
 
 	clientTLSConfig, err := config.SetupTLSConfig(config.TLSConfig{
-		CAFile: config.CAFile,
+		CertFile: config.ClientCertFile,
+		KeyFile:  config.ClientKeyFile,
+		CAFile:   config.CAFile,
 	})
 	require.NoError(t, err)
 
