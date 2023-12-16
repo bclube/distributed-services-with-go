@@ -5,9 +5,15 @@ go 1.21.5
 require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/tysonmote/gommap v0.0.2
+	go.opencensus.io v0.24.0
+	go.uber.org/zap v1.26.0
 )
 
-require github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
+require (
+	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
+	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+)
 
 require (
 	github.com/GeertJohan/go.rice v1.0.0 // indirect
