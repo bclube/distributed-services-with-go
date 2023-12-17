@@ -11,6 +11,7 @@ import (
 	api "github.com/bclube/proglog/api/v1"
 	"github.com/bclube/proglog/internal/log"
 	"github.com/hashicorp/raft"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/travisjeffery/go-dynaport"
 )
@@ -76,25 +77,37 @@ func TestMultipleNodes(t *testing.T) {
 			return true
 		}, 500*time.Millisecond, 50*time.Millisecond)
 	}
+	servers, err := logs[0].GetServers()
+	require.NoError(t, err)
+	require.Equal(t, 3, len(servers))
+	require.True(t, servers[0].IsLeader)
+	require.False(t, servers[1].IsLeader)
+	require.False(t, servers[2].IsLeader)
 
-	err := logs[0].Leave("1")
+	err = logs[0].Leave("1")
 	require.NoError(t, err)
 
-	time.Sleep(50 * time.Millisecond)
+	require.EventuallyWithT(t, func(collect *assert.CollectT) {
+		servers, err = logs[0].GetServers()
+		require.NoError(collect, err)
+		require.Equal(collect, 2, len(servers))
+		require.True(collect, servers[0].IsLeader)
+		require.False(collect, servers[1].IsLeader)
+	}, 3*time.Second, 250*time.Millisecond)
 
 	off, err := logs[0].Append(&api.Record{
 		Value: []byte("third"),
 	})
 	require.NoError(t, err)
 
-	time.Sleep(50 * time.Millisecond)
+	require.EventuallyWithT(t, func(collect *assert.CollectT) {
+		record, err := logs[2].Read(off)
+		require.NoError(collect, err)
+		require.Equal(collect, []byte("third"), record.Value)
+		require.Equal(collect, off, record.Offset)
+	}, 3*time.Second, 250*time.Millisecond)
 
 	record, err := logs[1].Read(off)
 	require.IsType(t, api.ErrOffsetOutOfRange{}, err)
 	require.Nil(t, record)
-
-	record, err = logs[2].Read(off)
-	require.NoError(t, err)
-	require.Equal(t, []byte("third"), record.Value)
-	require.Equal(t, off, record.Offset)
 }
